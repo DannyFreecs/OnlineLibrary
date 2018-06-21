@@ -1,0 +1,98 @@
+﻿@using Library.Persistence
+@using Bead1
+
+@model PaginatedList<Book>
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="sidebar">
+    <form asp-action="Index" method="get">
+        <ul id="sideul">
+            <li id="sideli">Rendezés</li>
+            <li id="sidesubli">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentTitle="@ViewData["TitleFilter"]"
+                   asp-route-currentAuthor="@ViewData["TitleAuthor"]">ABC sorrend</a>
+            </li>
+            <li id="sidesubli">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData[""]" asp-route-currentTitle="@ViewData["TitleFilter"]"
+                   asp-route-currentAuthor="@ViewData["TitleAuthor"]">Népszerűségi sorrend</a>
+            </li>
+            <li id="sideli">Keresés</li>
+            <li id="sidesubli">
+                Könyv címben: <br />
+                <div class="form-actions no-color">
+                    <input type="text" style="color:black" name="SearchTitle" value="@ViewData["TitleFilter"]" />
+                </div>
+            </li>
+            <li id="sidesubli">
+                Szerző névben: <br />
+                <div class="form-actions no-color">
+                    <input type="text" style="color:black" name="SearchAuthor" value="@ViewData["AuthorFilter"]" /><br />
+                    <input type="submit" style="margin:4px" value="Keresés" class="btn btn-default" /> | <a asp-action="Index">Teljes lista</a>
+                </div>
+            </li>
+        </ul>
+    </form>
+</div>
+
+<div id="content">
+    <h2 style="text-align:center; font-size: 40px; text-shadow:2px 2px 8px #333; font-family:Impact, DokChampa, sans-serif">Könyv lista</h2>
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="center" style="font-size:larger; background-color:#333; color:aliceblue">Nem található könyv.</div> <br />
+    }
+    else
+    {
+
+        @foreach (Book book in Model)
+        {
+
+            <a asp-controller="Home" 
+               style="font-size: 30px; text-align:center; margin: 0 auto; display:block; color:white; background-color:#333; font-family:'Comic Sans MS',cursive,sans-serif"
+               asp-action="Details" asp-route-bookId="@book.Id">@book.Title</a><br />
+            <img style="margin-left:auto; margin-right:auto; display:block; border:2px solid black; border-color:#333" src="data:image;base64,@System.Convert.ToBase64String(book.Picture)" /><br />
+            <table border="1" style="margin:auto; background-color:#333; width:100%">
+                <tr>
+                    <th>Szerző</th>
+                    <th>Megjelenés</th>
+                    <th>ISBN</th>
+                </tr>
+                <tr>
+                    <td>@book.Author</td>
+                    <td>@book.ReleaseYear.ToString()</td>
+                    <td>@book.ISBN</td>
+                </tr>
+            </table>
+            <br />
+        }
+
+    }
+
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+        <div class="center">
+            <button type="button" value="Prev" @prevDisabled
+                    onclick="location.href='@Url.Action("Index", "Home", new {
+                                                        sortOrder = ViewData["NameSortParm"],
+                                                        currentTitle = ViewData["TitleFilter"],
+                                                        currentAuthor = ViewData["AuthorFilter"],
+                                                        page = (Model.PageIndex-1) })'">
+                Prev
+            </button>
+
+            <button type="button" value="Next" @nextDisabled
+                    onclick="location.href='@Url.Action("Index", "Home", new {sortOrder = ViewData["NameSortParm"],
+                                                       currentTitle = ViewData["TitleFilter"],
+                                                       currentAuthor = ViewData["AuthorFilter"],
+                                                       page = (Model.PageIndex+1) })'">
+                Next
+            </button>
+        </div>
+    }
+</div>
+

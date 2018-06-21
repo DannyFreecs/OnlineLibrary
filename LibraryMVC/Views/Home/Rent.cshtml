@@ -1,0 +1,22 @@
+﻿@using Bead1.ViewModels
+@model RentViewModel
+
+@{
+    ViewData["Title"] = "RentView";
+}
+
+<h2 class="center">Kötet kölcsönzése</h2>
+
+
+@using (@Html.BeginForm())
+{
+    <div class="center">Kezdete: @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", style = "width:150px; margin:auto; text-align: center;" })</div>
+    <div class="center" style="color:red; background-color:#333"> @Html.ValidationMessageFor(m => m.StartDate)</div>
+
+    <div class="center">Vége: @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", style = "width:150px; margin:auto; text-align: center;" })</div>
+    <div class="center" style="color:red; background-color:#333"> @Html.ValidationMessageFor(m => m.EndDate)</div>
+
+    <div class="center" style="color:red; background-color:#333">@Html.DisplayFor(m => m.ValidationMessage)</div>
+
+    <button type="submit" style="margin:5px auto; display:block">Lefoglalom</button>
+}

@@ -1,0 +1,63 @@
+﻿@using System
+@using Microsoft.AspNetCore.Http
+@using Library.Persistence
+
+@model Book
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link rel="stylesheet" href="~/css/site.css">
+</head>
+<body>
+    <div style="font-size: 30px; text-align:center; margin: 0 auto; margin-top:10px; display:block; color:white; background-color:#333; font-family:'Comic Sans MS',cursive,sans-serif">
+        @Model.Title kötetei.
+    </div> <br />
+
+    @foreach (var vols in Model.Volumes)
+    {
+        <div style="display: flex; justify-content:center; align-items:center;">
+            <span style="display:inline-block; font-weight:700">Kötet azonosító: @vols.Id.ToString()</span>
+        </div>
+        <br />
+        <div style="display: flex; justify-content:center; align-items:center;">
+            <span style="display:inline-block; background-color:#333; color:aliceblue">Jelen és jövőbeli rendelések</span>
+        </div>
+
+        <table border="1" style="margin:auto; background-color:#333; width:45%">
+            <tr>
+                <th>Aktív</th>
+                <th colspan="2">Előjegyzés</th>
+            </tr>
+            @for (int i = 0; i < vols.Rents.Count; i++)
+            {
+
+                string aktiv = (vols.Rents.ElementAt(i).IsActive) ? "Jelenleg Kiadva" : "";
+                string start = ((vols.Rents.ElementAt(i).StartDate >= DateTime.Now) || (aktiv != "")) ? vols.Rents.ElementAt(i).StartDate.ToShortDateString() : "";
+                string end = ((vols.Rents.ElementAt(i).StartDate >= DateTime.Now) || aktiv != "") ? vols.Rents.ElementAt(i).EndDate.ToShortDateString() : "";
+
+                <tr>
+                    <td>@aktiv</td>
+                    <td>@start</td>
+                    <td>@end</td>
+                </tr>
+            }
+        </table>
+
+        if (Context.Session.GetString("user") != null)
+        {
+            <a asp-controller="Home" style="text-align:center; margin: 0 auto; display:block; width:100px" asp-action="Rent" asp-route-volumeId="@vols.Id">Lefoglalom!</a>
+        }
+        else
+        {
+            <div style="display: flex; justify-content:center; align-items:center;">
+                <span style="display:inline-block; background-color:#333; color:red">Foglalást csak bejelentkezést követően tehet a kötetre!</span>
+            </div>
+        }
+        <br />
+
+    }
+
+</body>
+</html>

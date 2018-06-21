@@ -1,0 +1,45 @@
+﻿@using Bead1.ViewModels
+
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2 class="center" style="margin-top: 10px">Regisztráció</h2><br />
+
+<body>
+    @using (@Html.BeginForm())
+    {
+        <table border="1" style="margin:auto; background-color:#333; width:30%">
+            <tr style="width:1%; white-space:nowrap">
+                <td>Felhasználónév: </td>
+                <td style="color:black; width:1%; white-space:nowrap">@Html.TextBoxFor(m => m.Name)</td>
+                <td style="color:red; width:1%; white-space:nowrap">@Html.ValidationMessageFor(m => m.Name)</td>
+            </tr>
+            <tr style="width:1%; white-space:nowrap">
+                <td>Lakcím: </td>
+                <td style="color:black; width:1%; white-space:nowrap">@Html.TextBoxFor(m => m.Address)</td>
+                <td style="color:red; width:1%; white-space:nowrap">@Html.ValidationMessageFor(m => m.Address)</td>
+            </tr>
+            <tr style="width:1%; white-space:nowrap">
+                <td>Telefonszám: </td>
+                <td style="color:black; width:1%; white-space:nowrap">@Html.TextBoxFor(m => m.PhoneNumber)</td>
+                <td style="color:red; width:1%; white-space:nowrap">@Html.ValidationMessageFor(m => m.PhoneNumber)</td>
+            </tr>
+            <tr style="width:1%; white-space:nowrap">
+                <td>Jelszó: </td>
+                <td style="color:black; width:1%; white-space:nowrap">@Html.PasswordFor(m => m.Password)</td>
+                <td style="color:red; width:1%; white-space:nowrap">@Html.ValidationMessageFor(m => m.Password)</td>
+            </tr>
+            <tr style="width:1%; white-space:nowrap">
+                <td>Jelszó: </td>
+                <td style="color:black; width:1%; white-space:nowrap">@Html.PasswordFor(m => m.PasswordAgain)</td>
+                <td style="color:red; width:1%; white-space:nowrap">@Html.ValidationMessageFor(m => m.PasswordAgain)</td>
+            </tr>
+        </table>
+
+        <div class="center" style="color:white; background-color:#333">@Html.DisplayFor(m => m.ValidationMessage)</div>
+        <button type="submit" style="margin:5px auto; display:block">Regisztrálok</button>
+    }
+</body>

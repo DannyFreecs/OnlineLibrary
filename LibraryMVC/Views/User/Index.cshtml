@@ -1,0 +1,27 @@
+﻿@using Bead1.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2 class="center" style="margin-top: 10px">Bejelentkezés</h2><br />
+
+@using (@Html.BeginForm())
+{
+    <table border="1" style="margin:auto; background-color:#333; width:30%">
+        <tr style="width:1%; white-space:nowrap">
+            <td>Felhasználónév: </td>
+            <td style="color:black; width:1%; white-space:nowrap">@Html.TextBoxFor(m => m.Name)</td>
+            <td style="color:red; width:1%; white-space:nowrap">@Html.ValidationMessageFor(m => m.Name)</td>
+        </tr>
+        <tr style="width:1%; white-space:nowrap">
+            <td>Jelszó: </td>
+            <td style="color:black; width:1%; white-space:nowrap">@Html.PasswordFor(m => m.Password)</td>
+            <td style="color:red; width:1%; white-space:nowrap">@Html.ValidationMessageFor(m => m.Password)</td>
+        </tr>
+    </table>
+    <br />
+    <div class="center" style="color:red; background-color:#333">@Html.DisplayFor(m => m.ValidationMessage)</div>
+    <button type="submit" style="margin:5px auto; display:block">Bejelentkezés</button>
+}

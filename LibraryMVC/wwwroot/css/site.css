@@ -1,0 +1,119 @@
+﻿body {
+    padding-bottom: 20px;
+    background-color:sandybrown;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#header {
+    color: white;
+    margin: 0px auto;
+    height: 200px;
+    width: 100%;
+    background-image: url(../images/konyvtar.png);
+    border: solid 4px black;
+}
+
+h1{
+    color:honeydew;
+    font-family:'Comic Sans MS', cursive, sans-serif;
+    text-align:center;
+}
+
+#navul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: sticky;
+    top: 0;
+    text-align: center;
+}
+
+#navli {
+    display:inline;
+}
+
+    #navli a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+        #navli a:hover {
+            background-color: #111;
+        }
+
+#sideul{
+    margin: 10px;
+    padding-left: 3px;
+}
+#sideli{
+    list-style:none;
+    font-size:large;
+    color: white;
+}
+
+#sidesubli {
+    margin-left: 30px;
+    background-image: url(../images/bookico.jpg);
+    background-repeat: no-repeat;
+    /*line-height:20px;*/
+    padding-left: 25px;
+    color: white;
+    list-style: none;
+}
+
+#oldal {
+    width: 100%;
+    font-family: Arial, Sans-serif;
+}
+
+#sidebar {
+    margin: 10px;
+    float: left;
+    width: 280px;
+    padding-left: 10px;
+    background-color: #333;
+    top:0;
+    position: sticky;
+    z-index:2;
+}
+
+#content {
+    width: 70%;
+    margin: auto;
+    padding-left: 500px;
+}
+
+th, td{
+    text-align:center;
+    color:aliceblue;
+    width: 33%;
+}
+
+.center {
+    margin: auto;
+    text-align:center;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
