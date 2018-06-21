@@ -1,0 +1,123 @@
+﻿<Window x:Class="Library.Admin.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:Library.Admin.Common.Converters"
+        mc:Ignorable="d"
+        Title="Könyvtár - Adminisztráció" Height="450" Width="1100" MinHeight="500" MinWidth="900">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <converters:BookImageConverter x:Key="BookToImage"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="18" />
+            <RowDefinition Height="*"  />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
+
+        <Menu Name="_Menu" Grid.Row="0" Width="70" HorizontalAlignment="Left">
+            <MenuItem Header="Adatbázis">
+                <MenuItem Header="Könyv lista" Command="{Binding LoadCommand}" />
+                <MenuItem Header="Könyvek mentése" Command="{Binding SaveCommand}" IsEnabled="{Binding IsLoaded}" />
+                <Separator />
+                <MenuItem Header="Rendelés lista" Command="{Binding LoadRentsCommand}" />
+                <Separator />
+                <MenuItem Header="Kilépés" Command="{Binding ExitCommand}" />
+            </MenuItem>
+        </Menu>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Könyvek" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Kötetek" HorizontalAlignment="Center" />
+        <TextBlock Grid.Row="1" Grid.Column="4" Text="Kölcsönzések" HorizontalAlignment="Center" />
+
+        <!-- KÖNYVEK -->
+        <DataGrid Name="bookGrid"
+                  Grid.Row="2"
+                  Grid.Column="0"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Books}"
+                  SelectedItem="{Binding Path=SelectedBook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  CanUserSortColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Cím" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Szerző" Binding="{Binding Author}" />
+                <DataGridTextColumn Header="Kiadás éve" Binding="{Binding ReleaseYear}" />
+                <DataGridTextColumn Header="ISBN szám" Binding="{Binding ISBN}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="4" Grid.Column="0" 
+                Content="Új könyv"
+                Command="{Binding CreateBookCommand}"
+                Width="80" Height="20"
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                IsEnabled="{Binding IsLoaded}" />
+
+        <Image Grid.Row="3" Grid.Column="0"
+               Source="{Binding ElementName=bookGrid, Path=SelectedItem.Picture, Converter={StaticResource BookToImage}}"/>
+
+        <!-- KÖTETEK -->
+        <DataGrid Name="volumeGrid" 
+                  Grid.Row="2" 
+                  Grid.Column="2" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True" ItemsSource="{Binding Path=SelectedBook.Volumes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                  CanUserSortColumns="False"
+                  SelectedItem="{Binding Path=SelectedVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Könyv" Binding="{Binding BookId}" />
+                <DataGridTextColumn Header="Könyvtári azonosító" Binding="{Binding Id}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Column="2" Grid.Row="3" Orientation="Horizontal">
+            <Button Content="+"  HorizontalAlignment="Left" Margin="29,5,0,0" VerticalAlignment="Top" Width="30" Command="{Binding AddVolumeCommand}" IsEnabled="{Binding IsLoaded}" />
+            <Button Content="-" HorizontalAlignment="Left" Margin="29,5,0,0" VerticalAlignment="Top" Width="30" Command="{Binding RemoveVolumeCommand}" IsEnabled="{Binding IsLoaded}" />
+        </StackPanel>
+        
+        <!-- RENDELÉSEK -->
+        <DataGrid Name="rentGrid"
+                  Grid.Row="2"
+                  Grid.Column="4"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Path=Rents, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding Path=SelectedRent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  CanUserSortColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Kötet" Binding="{Binding VolumeId}" />
+                <DataGridTextColumn Header="Kezdő nap" Binding="{Binding StartDate}" />
+                <DataGridTextColumn Header="Befejező nap" Binding="{Binding EndDate}" />
+                <DataGridTextColumn Header="Aktív" Binding="{Binding IsActive}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Column="4" Grid.Row="3" Orientation="Horizontal">
+            <Button Content="Rendelések lekérése" Margin="50,5,0,0" VerticalAlignment="Top" Width="120" Command="{Binding LoadRentsCommand}"/>
+            <Button Grid.Row="3" Grid.Column="4" Content="Aktivitás változtatása" Margin="50,5,0,0" VerticalAlignment="Top" Width="120" Command="{Binding UpdateRentCommand}" IsEnabled="{Binding IsLoaded}" />
+        </StackPanel>
+        
+
+        <!-- PROGBAR -->
+        <Border Background="AliceBlue" Grid.RowSpan="6" Grid.ColumnSpan="5" Visibility="{Binding Path=IsBusy, Mode=OneWay, Converter={StaticResource BoolToVis}}" d:IsHidden="True">
+            <ProgressBar IsIndeterminate="True" Width="300" Height="30"/>
+        </Border>
+    </Grid>
+</Window>

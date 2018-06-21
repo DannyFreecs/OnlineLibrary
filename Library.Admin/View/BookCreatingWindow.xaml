@@ -1,0 +1,41 @@
+﻿<Window x:Class="Library.Admin.View.BookCreatingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Library.Admin.View"
+        mc:Ignorable="d"
+        Title="BookCreatingWindow" Height="250" Width="350">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Cím:" Margin="5" />
+            <TextBox Width="150" Text="{Binding NewBook.Title}" Margin="40,5,5,5"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Szerző:" Margin="5" />
+            <TextBox Width="150" Text="{Binding NewBook.Author}" Margin="26,5,5,5"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <TextBlock Text="Kiadás éve:" Margin="5" />
+            <TextBox Width="150" Text="{Binding NewBook.ReleaseYear}" Margin="5"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <TextBlock Text="ISBN:" Margin="5" />
+            <TextBox Width="150" Text="{Binding NewBook.ISBN}" Margin="35,5,5,5"/>
+        </StackPanel>
+        <Button Grid.Row="4" Content="Kép hozzáadása" Width="100" HorizontalAlignment="Left" Margin="5,5,0,0" Command="{Binding CreateImageCommand}" />
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Mentés" Margin="30,5,10,0" Height="30" Command="{Binding SaveChangesCommand}" />
+            <Button Content="Mégse" Margin="5,5,10,0" Height="30" Command="{Binding CancelChangesCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>
